@@ -120,7 +120,7 @@
 						</div>
 						<div class="flex flex-1 flex-col">
 							<label for="reps" class="mb-1 text-sm text-at-light-green">
-								Reps
+								Repetitions
 							</label>
 							<input
 								v-if="edit"
@@ -133,7 +133,7 @@
 						</div>
 						<div class="flex flex-1 flex-col">
 							<label for="weight" class="mb-1 text-sm text-at-light-green">
-								Weight (LB's)
+								Weight (kg)
 							</label>
 							<input
 								v-if="edit"

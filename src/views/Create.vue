@@ -85,7 +85,7 @@
 						</div>
 						<div class="flex flex-col flex-1">
 							<label for="reps" class="mb-1 text-sm text-at-light-green"
-								>Reps
+								>Repetitions
 							</label>
 							<input
 								required
@@ -96,7 +96,7 @@
 						</div>
 						<div class="flex flex-col flex-1">
 							<label for="weight" class="mb-1 text-sm text-at-light-green"
-								>Weight (LB's)
+								>Weight (kg)
 							</label>
 							<input
 								required
