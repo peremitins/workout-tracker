@@ -247,7 +247,6 @@
 				</div>
 			</div>
 
-			<!-- Update -->
 			<button
 				v-if="edit"
 				@click="update"
@@ -264,13 +263,15 @@
 
 <script>
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { supabase } from "../supabase/init";
 import store from "../store/index";
+import { uid } from "uid";
 export default {
 	name: "View-Workout",
 	setup() {
 		const route = useRoute();
+		const router = useRouter();
 		const data = ref(null);
 		const dataLoaded = ref(null);
 		const errorMsg = ref(null);
@@ -296,7 +297,78 @@ export default {
 			}
 		};
 
+		const update = async () => {
+			try {
+				const { error } = await supabase
+					.from("workouts")
+					.update({
+						workoutName: data.value.workoutName,
+						exercises: data.value.exercises
+					})
+					.eq("id", currentId);
+				if (error) throw error;
+				edit.value = false;
+				statusMsg.value = "Success! Workout Updated!";
+				setTimeout(() => {
+					statusMsg.value = false;
+				}, 4000);
+			} catch (error) {
+				errorMsg.value = `Error: ${error.message}`;
+				setTimeout(() => {
+					errorMsg.value = false;
+				}, 4000);
+			}
+		};
+
 		getData();
+
+		const deleteWorkout = async () => {
+			try {
+				const { error } = await supabase
+					.from("workouts")
+					.delete()
+					.eq("id", currentId);
+				if (error) throw error;
+				router.push({ name: "Home" });
+			} catch (error) {
+				errorMsg.value = `Error: ${error.message}`;
+				setTimeout(() => {
+					errorMsg.value = false;
+				}, 4000);
+			}
+		};
+
+		const addExercise = () => {
+			if (data.value.workoutType === "strength") {
+				data.value.exercises.push({
+					id: uid(),
+					exercise: "",
+					sets: "",
+					reps: "",
+					weight: ""
+				});
+				return;
+			}
+			data.value.exercises.push({
+				id: uid(),
+				cardioType: "",
+				distance: "",
+				duration: "",
+				pace: ""
+			});
+		};
+
+		const deleteExercise = id => {
+			if (data.value.exercises.length > 1) {
+				data.value.exercises = data.value.exercises.filter(el => el.id !== id);
+				return;
+			}
+			errorMsg.value =
+				"Error: Cannot remove, need to at least have one exercise";
+			setTimeout(() => {
+				errorMsg.value = false;
+			}, 4000);
+		};
 
 		const edit = ref(null);
 		const editMode = () => {
@@ -310,7 +382,11 @@ export default {
 			statusMsg,
 			user,
 			edit,
-			editMode
+			editMode,
+			deleteWorkout,
+			addExercise,
+			deleteExercise,
+			update
 		};
 	}
 };
