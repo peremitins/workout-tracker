@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-full font-Poppins box-border">
+	<div v-if="appReady" class="min-h-full font-Poppins box-border">
 		<Navigation></Navigation>
 		<router-view />
 	</div>
@@ -7,12 +7,28 @@
 
 <script>
 import Navigation from "./components/Navigation";
+import { ref } from "vue";
+import { supabase } from "./supabase/init";
+import store from "./store/index";
+
 export default {
 	components: {
 		Navigation
 	},
 	setup() {
-		return {};
+		const appReady = ref(null);
+		const user = supabase.auth.user();
+		console.log(user);
+		if (!user) {
+			appReady.value = true;
+		}
+		supabase.auth.onAuthStateChange((event, session) => {
+			store.methods.setUser(session);
+			appReady.value = true;
+		});
+		return {
+			appReady
+		};
 	}
 };
 </script>
