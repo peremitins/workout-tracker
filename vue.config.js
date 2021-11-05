@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/vue-workout-tracker/'
+  publicPath: '/workout-tracker/'
 }
