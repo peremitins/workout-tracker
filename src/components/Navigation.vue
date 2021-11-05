@@ -3,10 +3,10 @@
 		<nav
 			class="container py-5 px-4 flex flex-col gap-4 items-center sm:flex-row"
 		>
-			<div class="flex items-center gap-x-4">
+			<router-link tag="div" to="/" class="flex items-center gap-x-4">
 				<img src="../assets/images/dumbbell-light.png" alt="" class="w-14" />
 				<h1 class="text-lg">Active Tracker</h1>
-			</div>
+			</router-link>
 			<ul class="flex flex-1 justify-end gap-x-10">
 				<router-link class="cursor-pointer" :to="{ name: 'Home' }"
 					>Home</router-link
